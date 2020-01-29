@@ -13,26 +13,28 @@ for c in companies:
     print(c)
 '''
 
-for i in range(200):
-# for stock in companies:
+dict = {}
+for i in range(70:len(companies)):
+
     stock = companies[i]
-    print("tick: ",ticks[stock]["tick"])
+    print("tick: ",ticks[stock]["tick"]," #",i)
 
     try:
         str = 'https://finance.google.com/finance?q='+ticks[stock]["tick"]+'&output=json'
-        print(str)
         rsp = requests.get(str)
-        # print('Response type: ',type(rsp))
-        cnt = rsp.content
-        # print('Content type: ',type(cnt))
         strCnt = rsp.content.decode('unicode_escape')
 
         idx = strCnt.find("Stock Price")
-        print('index: ',idx)
+        # print('index: ',idx)
         short = strCnt[idx:idx+500]
 
         arr = between(short,">","<")
         price = float(arr[0])
+        dict[stock] = ticks[stock]
         print(stock," close: $",price)
     except:
         x=0
+
+print(dict)
+with open("tickers.json") as f:
+    json.dump(dict,f)

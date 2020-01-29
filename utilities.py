@@ -24,10 +24,17 @@ def between(str,c1,c2):
     print("closing indices: ",c2idx)
     print("closing indices len: ",len(c2idx))
     '''
-    
+
     for i in range(len(c2idx)):
         v = str[c1idx[i]+1:c2idx[i]]
         if len(v)>0:
             between.append(v)
 
     return between
+
+'''
+strList = strCnt.split('>')
+with open('strList.html','w') as file:
+    for s in strList:
+        file.write(s+'>\n')
+'''
