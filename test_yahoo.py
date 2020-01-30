@@ -2,16 +2,22 @@ import requests
 import json
 from datetime import datetime
 import csv
+import os
+from flask_sqlalchemy import SQLAlchemy
+# from SQLAlchemy import create_engine
 
-with open("final_list.json") as json_file:
+path = os.path.join(os.path.expanduser('~'),'projects','stocks','text','final_list.json')
+
+with open(path) as json_file:
     ticks = json.load(json_file)
 
 companies = list(ticks.keys())
 
 # with open("stockData.csv")
-for iteration in range(1000):
-    with open('stockData.csv','w') as csvFile:
-        writer = csv.writer(csvFile)
+path = os.path.join(os.path.expanduser('~'),'projects','stocks','text','stockData.csv')
+with open(path,'w') as csvFile:
+    writer = csv.writer(csvFile)
+    for iteration in range(200):
         for company in companies:
             try:
                 str = 'https://finance.yahoo.com/quote/'+ticks[company]["tick"]
