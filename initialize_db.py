@@ -1,11 +1,18 @@
-from sqlalchemy import (create_engine, MetaData, Table, Integer, String, ForeignKey, DateTime,
-    PrimaryKeyConstraint, UniqueConstraint, CheckConstraint, Column, Numeric)
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy import (create_engine, MetaData, Table, Integer, String,
+    ForeignKey, DateTime,   PrimaryKeyConstraint, UniqueConstraint,
+    CheckConstraint, Column, Numeric, insert)
 import json
 import os
 
 with open("admin/config.json") as jsonFile:
     config = json.load(jsonFile)
+
+with open("text/final_list.json") as jsonFile:
+    companyDict = json.load(jsonFile)
+
+keys = list(companyDict.keys())
+
+print(companyDict[keys[0]].keys())
 
 HOST = config["HOST"]
 DB = config["DB"]
@@ -16,7 +23,6 @@ SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@%s/%s' % (USERNAME,PASSWORD,HOS
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'connect_timeout':60})
 connection = engine.connect()
-
 metadata = MetaData()
 
 companies = Table('companies',metadata,
@@ -30,5 +36,9 @@ prices = Table('prices',metadata,
             Column('price',Numeric(10,4)),
             Column('timestamp',DateTime()))
 
-metadata.create_all(engine)
-print("success!")
+for company in keys:
+    ins = companies.insert().values(
+        name = company,
+        tick = companyDict[company]["tick"]
+    )
+    result = connection.execute(ins)
