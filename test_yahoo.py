@@ -43,7 +43,7 @@ with open('text/stockData2.csv','w') as csvFile:
                 parseTime = (time1-time0).total_seconds()
 
                 dt = datetime.utcnow()
-                d = dt.strftime("%Y-%m-0%d %H:%M:%S %f")
+                d = dt.strptime("%Y-%m-0%d %H:%M:%S %f")
                 if priceStr=='1.6049999':
                     print('no result')
                 else:

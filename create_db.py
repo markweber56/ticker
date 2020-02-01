@@ -14,7 +14,8 @@ PASSWORD = config["PASSWORD"]
 
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@%s/%s' % (USERNAME,PASSWORD,HOST,DB)
 
-engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'connect_timeout':60})
+# engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'connect_timeout':60})
+engine = create_engine("sqlite:////home/mark/projects/stocks/db/stock_data.db")
 connection = engine.connect()
 
 metadata = MetaData()
