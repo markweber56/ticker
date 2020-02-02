@@ -1,0 +1,50 @@
+{% extends "home_base.html" %}
+
+{% block head %}
+{{ super() }}
+{% block styles %}
+<style>
+	.nav {
+		display: inline-block;
+		float: none;
+	}
+
+</style>
+{{ super() }}
+{% endblock styles %}
+{% block javascript %}
+{{ super() }}
+	<script type="text/javascript" src="\static\js\jquery.dataTables.js"></script>
+	<!--sizeButtons() was defined here previously-->
+	<!--setupUpload() was defined here previously-->
+	<script>
+	$(window).resize(function(){
+		console.log("resizing");
+		setupHeader();
+		sizeButtons();
+	});
+	</script>
+{% endblock javascript%}
+{% endblock head %}
+{% block body %}
+{{ super() }}
+<body onload="setupUpload()">
+	<form id='formid' method='POST' enctype='multipart/form-data'>
+		<input id='fileid' type='file' name='file' style="display:none" />
+			<div class="row" id="button-row" style="padding-top:40px">
+				<div class="col">
+					<input id='buttonid' type='button' value='Select File' class="btn btn-endo btn-left" style="padding:10px"/>
+				</div>
+				<div class="col" id="rightDiv">
+					<input id='submitButton' type='button' value="Submit" class="btn btn-endo btn-right" style="padding:10px"/>
+				</div>
+			</div>
+	</form>
+	<script>
+	data = {{ data }}
+	console.log(data)
+	</script>
+</body>
+
+{% endblock %}
+{% block content %}{% endblock content %}
