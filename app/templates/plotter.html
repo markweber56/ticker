@@ -1,4 +1,4 @@
-{% extends "home_base.html" %}
+{% extends "alternate.html" %}
 
 {% block head %}
 {{ super() }}
@@ -41,7 +41,7 @@
 			</div>
 	</form>
 	<script>
-	data = {{ data }}
+	data = {{ data | safe  }}
 	console.log(data)
 	</script>
 </body>

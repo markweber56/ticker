@@ -53,16 +53,16 @@ def plotter():
     print(test)
     price = test.price
     print("price: ",price)
+    d = []
     dt = test.timestamp
     for r in result:
-        price = r.price
-        dt = r.timestamp
-        print("price type: ",type(float(price)))
-        dt_str = str(dt)
-        print(dt_str)
-        print("dt type: ",type(DateTime(dt)))
-        d = [price,dt]
-    #    print(d)
+        price = float(r.price)
+        dt = str(r.timestamp)
+
+        d.append([price,dt])
+
+    print(s)
+    print("type: ",type(d))
 
     return render_template('plotter.html',data=d)
 
