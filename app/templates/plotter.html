@@ -29,20 +29,101 @@
 {% block body %}
 {{ super() }}
 <body onload="setupUpload()">
-	<form id='formid' method='POST' enctype='multipart/form-data'>
-		<input id='fileid' type='file' name='file' style="display:none" />
-			<div class="row" id="button-row" style="padding-top:40px">
-				<div class="col">
-					<input id='buttonid' type='button' value='Select File' class="btn btn-endo btn-left" style="padding:10px"/>
-				</div>
-				<div class="col" id="rightDiv">
-					<input id='submitButton' type='button' value="Submit" class="btn btn-endo btn-right" style="padding:10px"/>
-				</div>
-			</div>
-	</form>
-	<script>
-	data = {{ data | safe  }}
-	console.log(data)
+	<div id ="svgDiv"></div>
+	<script type="text/javascript">
+		data = {{ data | safe  }}
+		console.log(data)
+		var w = 800;
+		var h = 500;
+		var padding = 20;
+		var ds = [];
+		var xScale, yScale
+		var svg = d3.select("#svgDiv")
+							.append("svg")
+							.attr("width",w)
+							.attr("height",h);
+		
+	//	2020-01-29 17:24:06.232631
+		// var date_str = "2020-01-29 17:24:06"
+		var date_str = data[0][1]
+		var sub = date_str.substring(0,19)
+		console.log("date string: ",sub)
+		var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
+		var formatTime = d3.timeFormat("%M");
+		dt = parseTime(sub)
+		console.log("dt: ",dt)
+		
+		var td = [] ;
+		for(var i=0; i<data.length; i++) {
+			row = data[i]
+		//	console.log("row: ",row);
+			dt = new Date(row[1]);
+		//	console.log('datetime: ',dt)
+			ins = {date: dt, price:row[0]}
+		//	console.log("insert: ",ins)
+			td.push(ins)
+			v = formatTime(dt)
+			console.log("dt value: ",v);
+		};
+		console.log('td: ',td)
+		
+		xScale = d3.scaleTime()
+					.domain([
+						d3.min(td, function(d) {console.log('domain date: ',d.date); return d.date;}),
+						d3.max(td, function(d) {return d.date;})
+					])
+					.range([padding*2,w-padding]);
+					
+		yScale = d3.scaleLinear()
+					.domain([
+						d3.min(td, function(d) {return d.price;}),
+						d3.max(td, function(d) {return d.price;})
+					])
+					.range([h-padding,padding]);
+		
+		// define the axis
+		xAxis = d3.axisBottom()
+						.scale(xScale)
+						.ticks(9)
+						.tickFormat(formatTime)
+						
+		// define y axis
+		yAxis = d3.axisLeft()
+			.scale(yScale)
+			.ticks(10)
+			
+		var xmin = d3.min(td, function(d) {return d.date;});
+		console.log("xmin: ",xmin)
+		
+		// add data to plot
+		svg.selectAll("circle")
+			.data(td)
+			.enter()
+			.append("circle")
+			.attr("cx",function(d){
+				return xScale(d.date);
+			})
+			.attr("cy",function(d){
+				return yScale(d.price);
+			})
+			.attr("r",2)
+			
+		// create X axis
+		svg.append("g")
+			.attr("class","axis")
+			.attr("transform","translate(0," + (h - padding) + ")")
+			.call(xAxis)
+			
+		// create Y axis
+		svg.append("g")
+			.attr("class","axis")
+			.attr("transform","translate(" + 2*padding + ",0)")
+			.call(yAxis)
+//			.tickFormat(d3.format(".2f"));
+		
+		$('#svgDiv').css('paddingLeft', '100px')
+		
+		$(".axis text").css("fill","blue")
 	</script>
 </body>
 

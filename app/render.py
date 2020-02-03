@@ -19,6 +19,10 @@ def index():
 
 @app.route('/buttons',methods=['GET','POST'])
 def buttons():
+    return render_template('buttons.html')
+
+@app.route('/plotter',methods=['GET','POST'])
+def plotter():
     keys = list(companyDict.keys())
 
     engine = create_engine("sqlite:////home/mark/projects/stocks/db/stock_data.db")
