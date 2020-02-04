@@ -29,7 +29,8 @@
 {% block body %}
 {{ super() }}
 <body onload="setupUpload()">
-	<div id ="svgDiv"></div>
+	<h1 style="text-align:center">{{ company }}</h1>
+	<div id ="svgDiv" style="text-align:center"></div>
 	<script type="text/javascript">
 		data = {{ data | safe  }}
 		console.log(data)

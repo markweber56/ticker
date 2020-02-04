@@ -5,8 +5,10 @@ from sqlalchemy import (create_engine, MetaData, Table, String, ForeignKey,
 from sqlalchemy.sql import select
 import json
 from datetime import datetime
+from forms import stockForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'a hard to guess string'
 
 with open("../text/final_list.json") as jsonFile:
     companyDict = json.load(jsonFile)
@@ -23,13 +25,31 @@ def buttons():
 
 @app.route('/plotter',methods=['GET','POST'])
 def plotter():
+    # get company names from list of 50
     keys = list(companyDict.keys())
 
-    engine = create_engine("sqlite:////home/mark/projects/stocks/db/stock_data.db")
+    form = stockForm() # imported from forms.py
 
-    connection = engine.connect()
+    # connect to either local or remote db
+    dbType = "AWS"
+    if dbType == "AWS":
+        with open("../admin/config.json") as jsonFile:
+            config = json.load(jsonFile)
+
+        HOST = config["HOST"]
+        DB = config["DB"]
+        USERNAME = config["USERNAME"]
+        PASSWORD = config["PASSWORD"]
+        SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@%s/%s' % (USERNAME,PASSWORD,HOST,DB)
+        engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'connect_timeout':60})
+        print("connected to AWS")
+    elif dbType == "local":
+        engine = create_engine("sqlite:////home/mark/projects/stocks/db/stock_data.db")
+
+    connection = engine.connect() # establish connection
     metadata = MetaData()
 
+    # db table definitions
     companies = Table('companies',metadata,
                     Column('id',Integer(),primary_key=True),
                     Column('name',String(50),unique=True),
@@ -41,17 +61,17 @@ def plotter():
                 Column('price',Numeric(10,4)),
                 Column('timestamp',DateTime()))
 
-    s = select([companies]).where(companies.c.name==keys[2])
-    rp = connection.execute(s)
+    # select data based on company, will be from form
+    companyName = keys[40]
+    s = select([companies]).where(companies.c.name==companyName)
+
+    rp = connection.execute(s) # get company id key from company name
     results = rp.fetchall()
     id = results[0][0]
-    s = select([prices]).where(prices.c.company==id)
+    s = select([prices]).where(prices.c.company==id) # select price data
     rp = connection.execute(s)
     result = rp.fetchall()
-    '''
-    for row in data:
-        print('price: ',data[2],'timestamp: ',data[3])
-    '''
+
     test = result[0]
     print('type: ',type(test))
     print(test)
@@ -68,7 +88,7 @@ def plotter():
     print(s)
     print("type: ",type(d))
 
-    return render_template('plotter.html',data=d)
+    return render_template('plotter.html',data=d,company=companyName)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
