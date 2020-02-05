@@ -7,7 +7,7 @@ from flask_assets import Environment
 # look into flask-assets
 from .config import config
 
-print('config from import: ',config['local'])
+print('config from import: ',config['remote'])
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()

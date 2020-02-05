@@ -25,13 +25,13 @@ class RemoteDB(Config):
     DB = config["DB"]
     USERNAME = config["USERNAME"]
     PASSWORD = config["PASSWORD"]
-    SQLALCHEMY_DATABSE_URI = 'mysql+pymysql://%s:%s@%s/%s' % (USERNAME,PASSWORD,HOST,DB)
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@%s/%s' % (USERNAME,PASSWORD,HOST,DB)
 
 class LocalDB(Config):
     DEVELOPMENT = True
     DEBUG = True
 
-    SQLALCHEMY_DATABSE_URI = "sqlite:////home/mark/projects/stocks/db/stock_data.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////home/mark/projects/stocks/db/stock_data.db"
 
 config = {
     'local':LocalDB,

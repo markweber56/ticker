@@ -2,7 +2,7 @@ from app import create_app, db
 # from app.models import UploadInfo, FileInfo # tables
 from flask_migrate import Migrate
 
-app = create_app('local')
+app = create_app('remote')
 print('app: ',app)
 migrate = Migrate(app,db)
 
