@@ -3,7 +3,6 @@ from app import create_app, db
 from flask_migrate import Migrate
 
 app = create_app('remote')
-print('app: ',app)
 migrate = Migrate(app,db)
 
 @app.shell_context_processor #what is this

@@ -1,9 +1,10 @@
 from flask import render_template, request, session, redirect, url_for
 from flask import current_app as app
+from .. import db
+from ..models import companies
 from . import ticker
 
-print("!!!!!!!!!!!!! VIEEEEEEEEEEEEEWSSSS !!!!!!!!!!!!!!!!!!!")
-print(ticker)
+print('CHHHHECK   !!!!!! : ',companies)
 
 @ticker.route('/',methods=['GET','POST'])
 def index():
@@ -11,21 +12,22 @@ def index():
     return render_template('alternate.html')
 
 '''
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'a hard to guess string'
-
 with open("../text/final_list.json") as jsonFile:
     companyDict = json.load(jsonFile)
+'''
 
-@app.route('/',methods=['GET','POST'])
-def index():
-    # return render_template('home_base.html')
-    return render_template('alternate.html')
-
-@app.route('/buttons',methods=['GET','POST'])
+@ticker.route('/buttons',methods=['GET','POST'])
 def buttons():
+    sesh = db.session
+
+    companyNames = sesh.query(companies.name).all()
+    for c in companyNames:
+        print(c)
+    print('companyNames datatype: ',type(companyNames[0][0]))
+
     return render_template('buttons.html')
 
+'''
 @app.route('/plotter',methods=['GET','POST'])
 def plotter():
     # get company names from list of 50
@@ -93,6 +95,4 @@ def plotter():
 
     return render_template('plotter.html',data=d,company=companyName)
 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
 '''
