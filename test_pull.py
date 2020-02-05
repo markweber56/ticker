@@ -1,5 +1,5 @@
 from sqlalchemy import (create_engine, MetaData, Table, Integer, String,
-    ForeignKey, DateTime,   PrimaryKeyConstraint, UniqueConstraint,
+    ForeignKey, DateTime, PrimaryKeyConstraint, UniqueConstraint,
     CheckConstraint, Column, Numeric, insert)
 from sqlalchemy.sql import select
 import json

@@ -6,8 +6,7 @@ import os
 import csv
 from datetime import datetime
 
-# dbType = "AWS"
-dbType = "local"
+dbType = "AWS" #option2 = "local"
 
 with open("text/final_list.json") as jsonFile: # load ticker info
     companyDict = json.load(jsonFile)
@@ -54,9 +53,12 @@ fmt = '%Y-%m-%d %H:%M:%S %f'
 # timeVal = datetime.strptime(dateStr, fmt)
 
 '%Y-%m-%d %H:%M:%S %f'
+rowNum = 0
 with open("text/stockData.csv") as csvFile: # load recorded stock prices
     reader = csv.reader(csvFile,delimiter=',')
     for row in reader:
+        print("row#: ",rowNum)
+        rowNum+=1
         company = row[2]
         # s = select([companies]).where(companies.name == company)
         s = select([companies.c.id]).where(companies.c.name==company) # get foreign key
