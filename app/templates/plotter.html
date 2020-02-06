@@ -44,8 +44,8 @@
 	<div id ="svgDiv" style="text-align:center"></div>
 	<script type="text/javascript">
 		data = {{ data | safe  }}
-		
-		if (data) {
+		console.log("DATA LENGTH: ",data.length);
+		if (data.length > 0) {
 			console.log('DATA PASSED TO FRONT END');
 		} else {
 			console.log('NO DATA PASSED TO FRONT END');
@@ -53,11 +53,10 @@
 	$("#stockSelection").change(function() {
 		console.log("YOU SELECTED SOMETHING");
 		$("#formID").submit();
-		console.log("submitted")
+		console.log("submitted");
 	});
-	</script>
 	
-	<!--
+	
 		console.log(data)
 		var w = 800;
 		var h = 500;
@@ -68,25 +67,19 @@
 							.append("svg")
 							.attr("width",w)
 							.attr("height",h);
-		
-	//	2020-01-29 17:24:06.232631
-		// var date_str = "2020-01-29 17:24:06"
-		var date_str = data[0][1]
-		var sub = date_str.substring(0,19)
-		console.log("date string: ",sub)
+	
+	// plot data if data is passed to front end
+	if(data.length > 0){
 		var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 		var formatTime = d3.timeFormat("%M");
-		dt = parseTime(sub)
-		console.log("dt: ",dt)
+		// dt = parseTime(sub)
+		// console.log("dt: ",dt)
 		
 		var td = [] ;
 		for(var i=0; i<data.length; i++) {
 			row = data[i]
-		//	console.log("row: ",row);
 			dt = new Date(row[1]);
-		//	console.log('datetime: ',dt)
 			ins = {date: dt, price:row[0]}
-		//	console.log("insert: ",ins)
 			td.push(ins)
 			v = formatTime(dt)
 			console.log("dt value: ",v);
@@ -150,8 +143,8 @@
 		$('#svgDiv').css('paddingLeft', '100px')
 		
 		$(".axis text").css("fill","blue")
-		
-	</script-->
+	};	
+	</script>
 </body>
 
 {% endblock %}

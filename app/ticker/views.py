@@ -43,23 +43,30 @@ def plotter():
 
     form = stockForm() # imported from forms.py
 
+    plotData = [] # initialize values to pass to html
+    companySelection = ''
+
     if request.method == 'POST':
         print('!!!!!!!!!!!! A POST HAS BEEN REQUETED !!!!!!')
-        companySelection = form.stock_selection.data
-        print("Company selection: ",companySelection)
+        companySelection = form.stock_selection.data # company selected by user
+        # query db
         q = companies.query.filter_by(name=companySelection).first()
         id = q.id
         print("company ID: ",id)
-        data = prices.query.filter_by(company=id)
+        data = prices.query.filter_by(company=id).all()
         print("data: ",data[0])
-        for i in range(len(data))
-            price = float()
+        plotData = []
+        print("data dict: ",data[0].__dict__)
+        for row in data:
+            price = float(row.price)
+            dt = str(row.timestamp)
+            plotData.append([price,dt])
+        print("plotData: ",plotData)
 
     else:
         print('something other than a POST')
 
-    data = []
-    company = ''
+
 
     companyNames = []
     companyInfo = companies.query.all()
@@ -71,7 +78,7 @@ def plotter():
     form.stock_selection.choices = companyNames
     # print('company names: ',companyNames)
 
-    return render_template('plotter.html',data=data,company=company,form=form)
+    return render_template('plotter.html',data=plotData,company=companySelection,form=form)
 
     '''
     # select data based on company, will be from form
