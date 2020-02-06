@@ -145,6 +145,12 @@
 		var children = $("#yAxis").find("g").find("text").each(function() {
 			$(this).css("color","red");
 		});
+		var children = $("#yAxis").find("g").find("text").each(function() {
+			val = $(this).text();
+			val = "$"+val;
+			console.log("text value: ",val);
+			$(this).text(val);
+		});
 		console.log("children: ",children)
 		console.log("children type: ",typeof children)
 		
