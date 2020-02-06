@@ -31,7 +31,7 @@
 {% block body %}
 {{ super() }}
 <body onload="setupUpload()">
-	<h1 style="text-align">{{ company }}</h1>
+	<h1 style="text-align:center">{{ company }}</h1>
 	<div class="form-padded">
 		<form id="formID" role="form" method="POST" action="" class="form-row">
 			{{ form.hidden_tag() }}
@@ -82,13 +82,13 @@
 			ins = {date: dt, price:row[0]}
 			td.push(ins)
 			v = formatTime(dt)
-			console.log("dt value: ",v);
+		//	console.log("dt value: ",v);
 		};
-		console.log('td: ',td)
+		// console.log('td: ',td)
 		
 		xScale = d3.scaleTime()
 					.domain([
-						d3.min(td, function(d) {console.log('domain date: ',d.date); return d.date;}),
+						d3.min(td, function(d) { return d.date;}),
 						d3.max(td, function(d) {return d.date;})
 					])
 					.range([padding*2,w-padding]);
@@ -136,13 +136,21 @@
 		// create Y axis
 		svg.append("g")
 			.attr("class","axis")
+			.attr("id","yAxis")
 			.attr("transform","translate(" + 2*padding + ",0)")
 			.call(yAxis)
-//			.tickFormat(d3.format(".2f"));
+
+		// children = $("#yAxis") .children().(".g")
+		// var children = $("#yAxis").find("g")[0]
+		var children = $("#yAxis").find("g").find("text").each(function() {
+			$(this).css("color","red");
+		});
+		console.log("children: ",children)
+		console.log("children type: ",typeof children)
 		
 		$('#svgDiv').css('paddingLeft', '100px')
 		
-		$(".axis text").css("fill","blue")
+	//	$(".axis text").css("fill","blue")
 	};	
 	</script>
 </body>
