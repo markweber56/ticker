@@ -1,71 +1,79 @@
 from flask import render_template, request, session, redirect, url_for
 from flask import current_app as app
 from .. import db
-from ..models import companies
+from ..models import companies, prices
 from . import ticker
+from .forms import stockForm
 
 print('CHHHHECK   !!!!!! : ',companies)
 
 @ticker.route('/',methods=['GET','POST'])
 def index():
-    print('you have reached the home base mother fucker')
+    print('you have reached the home base')
     return render_template('alternate.html')
-
-'''
-with open("../text/final_list.json") as jsonFile:
-    companyDict = json.load(jsonFile)
-'''
 
 @ticker.route('/buttons',methods=['GET','POST'])
 def buttons():
     sesh = db.session
 
-    companyNames = sesh.query(companies.name).all()
+#    companyInfo = sesh.query(companies.tick).all()
+    companyInfo = companies.query.all()
+    print('company info type: ',type(companyInfo))
+    testVal = companyInfo[0]
+    print('test value: ',testVal)
+    print(testVal.__dict__)
+    print('test tick: ',testVal.tick)
+    '''
+    for c in companyInfo:
+        print(c)
+    companyNames = companyInfo[0].name
+
+    company = companyInfo.name[0][0]
+    id = companyInfo.id[0][0]
     for c in companyNames:
         print(c)
     print('companyNames datatype: ',type(companyNames[0][0]))
+    print('company id: ',id)
+    '''
 
     return render_template('buttons.html')
 
-'''
-@app.route('/plotter',methods=['GET','POST'])
+@ticker.route('/plotter',methods=['GET','POST'])
 def plotter():
-    # get company names from list of 50
-    keys = list(companyDict.keys())
 
     form = stockForm() # imported from forms.py
 
-    # connect to either local or remote db
-    dbType = "AWS"
-    if dbType == "AWS":
-        with open("../admin/config.json") as jsonFile:
-            config = json.load(jsonFile)
+    if request.method == 'POST':
+        print('!!!!!!!!!!!! A POST HAS BEEN REQUETED !!!!!!')
+        companySelection = form.stock_selection.data
+        print("Company selection: ",companySelection)
+        q = companies.query.filter_by(name=companySelection).first()
+        id = q.id
+        print("company ID: ",id)
+        data = prices.query.filter_by(company=id)
+        print("data: ",data[0])
+        for i in range(len(data))
+            price = float()
 
-        HOST = config["HOST"]
-        DB = config["DB"]
-        USERNAME = config["USERNAME"]
-        PASSWORD = config["PASSWORD"]
-        SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@%s/%s' % (USERNAME,PASSWORD,HOST,DB)
-        engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'connect_timeout':60})
-        print("connected to AWS")
-    elif dbType == "local":
-        engine = create_engine("sqlite:////home/mark/projects/stocks/db/stock_data.db")
+    else:
+        print('something other than a POST')
 
-    connection = engine.connect() # establish connection
-    metadata = MetaData()
+    data = []
+    company = ''
 
-    # db table definitions
-    companies = Table('companies',metadata,
-                    Column('id',Integer(),primary_key=True),
-                    Column('name',String(50),unique=True),
-                    Column('tick',String(10),unique=True))
+    companyNames = []
+    companyInfo = companies.query.all()
+    for row in companyInfo:
+        name = row.name
+    #    print('company name: ',name)
+        companyNames.append((name,name))
 
-    prices = Table('prices',metadata,
-                Column('id',Integer(),primary_key=True),
-                Column('company',ForeignKey('companies.id')),
-                Column('price',Numeric(10,4)),
-                Column('timestamp',DateTime()))
+    form.stock_selection.choices = companyNames
+    # print('company names: ',companyNames)
 
+    return render_template('plotter.html',data=data,company=company,form=form)
+
+    '''
     # select data based on company, will be from form
     companyName = keys[40]
     s = select([companies]).where(companies.c.name==companyName)
@@ -94,5 +102,4 @@ def plotter():
     print("type: ",type(d))
 
     return render_template('plotter.html',data=d,company=companyName)
-
-'''
+    '''

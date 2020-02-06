@@ -8,7 +8,9 @@
 		display: inline-block;
 		float: none;
 	}
-
+	.form-padded {
+		padding-left: 50px;
+	}
 </style>
 {{ super() }}
 {% endblock styles %}
@@ -30,9 +32,32 @@
 {{ super() }}
 <body onload="setupUpload()">
 	<h1 style="text-align">{{ company }}</h1>
+	<div class="form-padded">
+		<form id="formID" role="form" method="POST" action="" class="form-row">
+			{{ form.hidden_tag() }}
+			<div class = "form-group-col">
+				{{ form.stock_selection.label }}
+				{{ form.stock_selection(class="form-control",id="stockSelection") }}
+			</div>
+		</form>
+	</div>
 	<div id ="svgDiv" style="text-align:center"></div>
 	<script type="text/javascript">
 		data = {{ data | safe  }}
+		
+		if (data) {
+			console.log('DATA PASSED TO FRONT END');
+		} else {
+			console.log('NO DATA PASSED TO FRONT END');
+		};
+	$("#stockSelection").change(function() {
+		console.log("YOU SELECTED SOMETHING");
+		$("#formID").submit();
+		console.log("submitted")
+	});
+	</script>
+	
+	<!--
 		console.log(data)
 		var w = 800;
 		var h = 500;
@@ -125,7 +150,8 @@
 		$('#svgDiv').css('paddingLeft', '100px')
 		
 		$(".axis text").css("fill","blue")
-	</script>
+		
+	</script-->
 </body>
 
 {% endblock %}
