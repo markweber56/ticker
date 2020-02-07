@@ -148,8 +148,20 @@
 			// var children = $("#yAxis").find("g")[0]
 			var formatYaxis = $("#yAxis").find("g").find("text").each(function() {
 				val = $(this).text();
-				val = "$"+val;
+				if(val.includes("$")){
+					val = "$"+val;
+				};
+				// val = "$"+val;
 				console.log("text value: ",val);
+				test = val.includes("$");
+				/*
+				console.log("TEEEEESTTTTT",test);
+				if(test) {
+					console.log("TEST PASSED");
+				} else {
+					console.log("TEST FAILED");
+				};
+				*/
 				$(this).text(val);
 				$(this).css("color","green");
 			});
@@ -172,6 +184,8 @@
 				.attr("height",h-padding)
 				.attr("fill","teal")
 				.attr("id","background");
+				
+			plotData();
 		});
 		
 		$("#mainSVG").mouseleave(function() {
