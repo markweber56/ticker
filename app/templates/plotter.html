@@ -32,6 +32,7 @@
 {{ super() }}
 <body onload="setupUpload()">
 	<h1 style="text-align:center">{{ company }}</h1>
+	<h2 id="test"></h2>
 	<div class="form-padded">
 		<form id="formID" role="form" method="POST" action="" class="form-row">
 			{{ form.hidden_tag() }}
@@ -55,7 +56,9 @@
 		$("#formID").submit();
 		console.log("submitted");
 	});
-	
+	//	var timeParse = d3.timeParse("%Y-%m-%d %H:%M:%S")
+	//	var formatTime = d3.timeFormat("%H:%M %p")
+		
 		var w = 800;
 		var h = 500;
 		var padding = 20;
@@ -92,25 +95,8 @@
 			console.log("you left the backgound !!!");
 			$("#background").css("fill","none");
 		});
-		/*
-		$("#mainSVG").mouseenter(function() {
-			console.log(" MOUSE OVER ");
-			x = 2*padding;
-			y = padding;
-
-				
-			plotData();
-		});
+		var test_dt = "2020-01-29 17:23:11"
 		
-		$("#mainSVG").mouseleave(function() {
-			console.log("MOUSE IS OUT");
-			$("#background").remove();
-		});
-		*/
-
-		// $("#svgDiv").css("background-color" ,"blue");
-	//	$(".axis text").css("fill","blue")
-
 	</script>
 </body>
 

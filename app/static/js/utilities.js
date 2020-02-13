@@ -54,7 +54,7 @@ function setupPlotter() {
 
 function plotData() {
 	var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
-	var formatTime = d3.timeFormat("%M");
+	var formatTime = d3.timeFormat("%H:%M %p");
 	// dt = parseTime(sub)
 	// console.log("dt: ",dt)
 	
