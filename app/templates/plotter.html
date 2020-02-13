@@ -25,6 +25,12 @@
 		setupHeader();
 		sizeButtons();
 	});
+	function rPosition(elementID, mouseX, mouseY) {
+		var offset = $('#'+elementID).offset();
+		var x = mouseX - offset.left;
+		var y = mouseY - offset.top;
+		return {'x': x, 'y': y};
+	};
 	</script>
 {% endblock javascript%}
 {% endblock head %}
@@ -62,6 +68,7 @@
 		var w = 800;
 		var h = 500;
 		var padding = 20;
+		var xTranslate = 3*padding;
 		var ds = [];
 		var xScale, yScale
 		// create svg element for plotting
@@ -85,18 +92,40 @@
 			console.log("DATA PLOTTED");
 		};
 		
+
+		
 		$('#svgDiv').css('paddingLeft', '100px')
 		
+		var offset = $("#background").offset();
+				
 		$("#mainSVG").mouseenter(function() {
 			console.log("you entered the background!!!")
 			$("#background").css("fill","#ccebff");
+			/*
+			var X = $("body").offset().left;
+			var Y = $("body").offset().top;
+			mouseX = ev.pageX - X;
+			mouseY = ev.pageY - Y;
+			alert(rPosition("mainSVG",mouseX,mouseY))
+			*/
+		});
+		$("#background").mouseover(function(e) {
+			$(this).mousemove(function(e2) {
+				console.log("mouseover "+e2.pageX+","+e2.pageY);
+				console.log("x offset: ",e2.pageX-offset.left+xTranslate);
+			});
 		});
 		$("#mainSVG").mouseleave(function(){
 			console.log("you left the backgound !!!");
 			$("#background").css("fill","none");
 		});
-		var test_dt = "2020-01-29 17:23:11"
-		
+		var numCirlces = 0;
+		circles = $("#mainSVG").find("circle").each(function(){
+			console.log("we found a cirlce");
+			xVal = $(this).attr("cx");
+			console.log("xVal: ",xVal);
+		});		
+		$("#mainSVG").find("circle").eq(30).css("fill","red");
 	</script>
 </body>
 

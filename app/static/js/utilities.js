@@ -68,13 +68,14 @@ function plotData() {
 	//	console.log("dt value: ",v);
 	};
 	// console.log('td: ',td)
+	xTranslate = 3*padding;
 	
 	xScale = d3.scaleTime()
 				.domain([
 					d3.min(td, function(d) { return d.date;}),
 					d3.max(td, function(d) {return d.date;})
 				])
-				.range([padding*3,w-padding]);
+				.range([xTranslate,w-padding]);
 				
 	yScale = d3.scaleLinear()
 				.domain([
@@ -120,7 +121,7 @@ function plotData() {
 	svg1.append("g")
 		.attr("class","axis")
 		.attr("id","yAxis")
-		.attr("transform","translate(" + 3*padding + ",0)")
+		.attr("transform","translate(" + xTranslate + ",0)")
 		.call(yAxis)
 
 	// children = $("#yAxis") .children().(".g")
@@ -134,14 +135,7 @@ function plotData() {
 		// val = "$"+val;
 		console.log("text value: ",val);
 		test = val.includes("$");
-		/*
-		console.log("TEEEEESTTTTT",test);
-		if(test) {
-			console.log("TEST PASSED");
-		} else {
-			console.log("TEST FAILED");
-		};
-		*/
+
 		$(this).text(val);
 		$(this).css("color","green");
 			});
