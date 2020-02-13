@@ -11,9 +11,6 @@
 	.form-padded {
 		padding-left: 50px;
 	}
-	#mainSVG:hover {
-		fill: red;
-	}
 </style>
 {{ super() }}
 {% endblock styles %}
@@ -70,103 +67,6 @@
 							.attr("height",h)
 							.attr("id","mainSVG");
 	
-	// plot data if data is passed to front end
-
-	// if(data.length > 0){
-		function plotData() {
-			var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
-			var formatTime = d3.timeFormat("%M");
-			// dt = parseTime(sub)
-			// console.log("dt: ",dt)
-			
-			var td = [] ;
-			for(var i=0; i<data.length; i++) {
-				row = data[i]
-				dt = new Date(row[1]);
-				ins = {date: dt, price:row[0]}
-				td.push(ins)
-				v = formatTime(dt)
-			//	console.log("dt value: ",v);
-			};
-			// console.log('td: ',td)
-			
-			xScale = d3.scaleTime()
-						.domain([
-							d3.min(td, function(d) { return d.date;}),
-							d3.max(td, function(d) {return d.date;})
-						])
-						.range([padding*2,w-padding]);
-						
-			yScale = d3.scaleLinear()
-						.domain([
-							d3.min(td, function(d) {return d.price;}),
-							d3.max(td, function(d) {return d.price;})
-						])
-						.range([h-padding,padding]);
-			
-			// define the axis
-			xAxis = d3.axisBottom()
-							.scale(xScale)
-							.ticks(9)
-							.tickFormat(formatTime)
-							
-			// define y axis
-			yAxis = d3.axisLeft()
-				.scale(yScale)
-				.ticks(10)
-				
-			var xmin = d3.min(td, function(d) {return d.date;});
-			console.log("xmin: ",xmin)
-			
-			// add data to plot
-			svg1.selectAll("circle")
-				.data(td)
-				.enter()
-				.append("circle")
-				.attr("cx",function(d){
-					return xScale(d.date);
-				})
-				.attr("cy",function(d){
-					return yScale(d.price);
-				})
-				.attr("r",2)
-				
-			// create X axis
-			svg1.append("g")
-				.attr("class","axis")
-				.attr("transform","translate(0," + (h - padding) + ")")
-				.call(xAxis)
-				
-			// create Y axis
-			svg1.append("g")
-				.attr("class","axis")
-				.attr("id","yAxis")
-				.attr("transform","translate(" + 2*padding + ",0)")
-				.call(yAxis)
-
-			// children = $("#yAxis") .children().(".g")
-			// var children = $("#yAxis").find("g")[0]
-			var formatYaxis = $("#yAxis").find("g").find("text").each(function() {
-				val = $(this).text();
-				if(val.includes("$")){
-					val = "$"+val;
-				};
-				// val = "$"+val;
-				console.log("text value: ",val);
-				test = val.includes("$");
-				/*
-				console.log("TEEEEESTTTTT",test);
-				if(test) {
-					console.log("TEST PASSED");
-				} else {
-					console.log("TEST FAILED");
-				};
-				*/
-				$(this).text(val);
-				$(this).css("color","green");
-			});
-		};
-		
 		if(data.length > 0) {
 			plotData();
 			console.log("DATA PLOTTED");
@@ -180,8 +80,8 @@
 			svg1.append("rect")
 				.attr("x",x)
 				.attr("y",y)
-				.attr("width",w-padding)
-				.attr("height",h-padding)
+				.attr("width",w-3*padding)
+				.attr("height",h-2*padding)
 				.attr("fill","teal")
 				.attr("id","background");
 				
@@ -193,8 +93,7 @@
 			$("#background").remove();
 		});
 			
-		x = h - padding;
-		y = 2*padding;
+
 		// $("#svgDiv").css("background-color" ,"blue");
 	//	$(".axis text").css("fill","blue")
 

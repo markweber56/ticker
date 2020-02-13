@@ -66,8 +66,6 @@ def plotter():
     else:
         print('something other than a POST')
 
-
-
     companyNames = []
     companyInfo = companies.query.all()
     for row in companyInfo:
