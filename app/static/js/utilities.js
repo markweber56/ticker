@@ -74,7 +74,7 @@ function plotData() {
 					d3.min(td, function(d) { return d.date;}),
 					d3.max(td, function(d) {return d.date;})
 				])
-				.range([padding*2,w-padding]);
+				.range([padding*3,w-padding]);
 				
 	yScale = d3.scaleLinear()
 				.domain([
@@ -120,7 +120,7 @@ function plotData() {
 	svg1.append("g")
 		.attr("class","axis")
 		.attr("id","yAxis")
-		.attr("transform","translate(" + 2*padding + ",0)")
+		.attr("transform","translate(" + 3*padding + ",0)")
 		.call(yAxis)
 
 	// children = $("#yAxis") .children().(".g")

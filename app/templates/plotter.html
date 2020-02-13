@@ -61,6 +61,7 @@
 		var padding = 20;
 		var ds = [];
 		var xScale, yScale
+		// create svg element for plotting
 		var svg1 = d3.select("#svgDiv")
 							.append("svg")
 							.attr("width",w)
@@ -68,22 +69,35 @@
 							.attr("id","mainSVG");
 	
 		if(data.length > 0) {
+			// add background
+			svg1.append("rect")
+				.attr("x",3*padding)
+				.attr("y",padding)
+				.attr("width",w-4*padding)
+				.attr("height",h-2*padding)
+				.attr("fill","none")
+				.attr("id","background");
+			
 			plotData();
 			console.log("DATA PLOTTED");
 		};
 		
 		$('#svgDiv').css('paddingLeft', '100px')
+		
+		$("#mainSVG").mouseenter(function() {
+			console.log("you entered the background!!!")
+			$("#background").css("fill","#ccebff");
+		});
+		$("#mainSVG").mouseleave(function(){
+			console.log("you left the backgound !!!");
+			$("#background").css("fill","none");
+		});
+		/*
 		$("#mainSVG").mouseenter(function() {
 			console.log(" MOUSE OVER ");
 			x = 2*padding;
 			y = padding;
-			svg1.append("rect")
-				.attr("x",x)
-				.attr("y",y)
-				.attr("width",w-3*padding)
-				.attr("height",h-2*padding)
-				.attr("fill","teal")
-				.attr("id","background");
+
 				
 			plotData();
 		});
@@ -92,7 +106,7 @@
 			console.log("MOUSE IS OUT");
 			$("#background").remove();
 		});
-			
+		*/
 
 		// $("#svgDiv").css("background-color" ,"blue");
 	//	$(".axis text").css("fill","blue")
