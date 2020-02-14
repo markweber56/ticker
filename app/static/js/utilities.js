@@ -98,6 +98,23 @@ function plotData() {
 	var xmin = d3.min(td, function(d) {return d.date;});
 	console.log("xmin: ",xmin)
 	
+	/*
+	 svg1.append("line")
+		.attr("x1",60)
+		.attr("x2",780)
+		.attr("y1",300)
+		.attr("y2",300)
+	*/
+	
+	lineGroup = svg1.append("g")
+		.attr("id","lines")
+		
+	lineGroup.append("line")
+		.attr("x1",60)
+		.attr("x2",780)
+		.attr("y1",300)
+		.attr("y2",300)
+		
 	// add data to plot
 	svg1.selectAll("circle")
 		.data(td)
