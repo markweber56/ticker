@@ -157,3 +157,23 @@ function plotData() {
 		$(this).css("color","green");
 			});
 		};
+// get array minimum and maximum
+function minMax(arr) {
+	min = arr[0];
+	max = arr[0];
+	for(i=1; i<arr.length; i++){
+		if(arr[i] < min){
+			min = arr[i];
+		};
+		if(arr[i] > max){
+			max = arr[i];
+		};
+	};
+	return {min: min, max:max};
+};
+
+// find array index of value (for linearly scaled arrays)
+function findIndex(xMin,m,x) {
+	idx = Math.round((x-xMin)*m);
+	return idx;
+};

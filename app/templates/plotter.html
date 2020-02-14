@@ -99,39 +99,19 @@
 		$('#svgDiv').css('paddingLeft', '100px')
 		
 		var offset = $("#background").offset();
-		/*
-		$("#mainSVG").mouseenter(function() {
-			console.log("you entered the background!!!")
-			// $("#background").css("fill","#ccebff");
-		});
-		*/
+
 		xArr = [];
 		circles = $("#mainSVG").find("circle").each(function(){
 			xVal = $(this).attr("cx");
 			xArr.push(parseFloat(xVal));
 			console.log("xVal: ",xVal);
 		});
-		function minMax(arr) {
-			min = arr[0];
-			max = arr[0];
-			for(i=1; i<arr.length; i++){
-				if(arr[i] < min){
-					min = arr[i];
-				};
-				if(arr[i] > max){
-					max = arr[i];
-				};
-			};
-			return {min: min, max:max};
-		};
+
 		var lowHigh = minMax(xArr);
 		var xMin = lowHigh.min;
 		xMax = lowHigh.max;
 		var m = xArr.length/(xMax-xMin);
-		function findIndex(xMin,m,x) {
-			idx = Math.round((x-xMin)*m);
-			return idx;
-		};
+
 		$("#mainSVG").find("circle").eq(30).css("fill","red");
 		$("#background").mouseover(function(e) {
 		//	console.log("mouse is over the background")
@@ -139,28 +119,11 @@
 		//		console.log("the mouse has moved")
 				mouseX = e2.pageX-offset.left+xTranslate;
 				lowIdx =findIndex(xMin,m,mouseX);
-				/*
-				lowest = 1000;
-				lowIdx = -1;
-				for(i=0; i<xArr.length; i++) {
-					dif = Math.abs(mouseX-xArr[i]);
-					if(dif < lowest) {
-						lowest = dif;
-						lowIdx = i;
-					};
-				};
-				*/
+
 				$("#mainSVG").find("circle").css("fill","black").attr("r",2);
 				circObj = $("#mainSVG").find("circle").eq(lowIdx);
 				circObj.css("fill","red").attr("r",10);
 				lineHeight = circObj.attr("cy");
-				/*
-				console.log("search index: ",lowIdx);
-				test = findIndex(xMin,m,mouseX);
-				console.log("function index: ",test)
-				*/
-				// var lineStr = '<line x1="'+3*padding+'" x2="'+(w-padding)+'" y1="'+lineHeight+'" y2="'+lineHeight+'">'
-				// console.log(lineStr)
 
 				$("line").remove()
 				svg1.select("#lines").append("line")
@@ -173,13 +136,6 @@
 
 			});
 		});
-		/*
-		$("#mainSVG").mouseleave(function(){
-			console.log("you left the backgound !!!");
-		//	$("#background").css("fill","white");
-		});
-		*/
-		idx = 0;
 
 	</script>
 </body>
